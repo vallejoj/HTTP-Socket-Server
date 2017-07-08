@@ -6,15 +6,17 @@ const error404 = fs.readFileSync('./public/404.html');
 const helium = fs.readFileSync('./public/helium.html');
 const hydrogen = fs.readFileSync('./public/hydrogen.html');
 const index = fs.readFileSync('./public/index.html');
-
+const styles= fs.readFileSync('./public/css/styles.css')
 
 const server = net.createServer( (socket) => {
+
 
       socket.on('data', (data) => {
           const myData = data.toString().split('\n');
           const myArray = myData[0].split(' ');
           const path = myArray[1];
-          console.log(myArray);
+          console.log("yo" + myArray);
+
           switch (path) {
 
             case '/':
@@ -35,10 +37,13 @@ const server = net.createServer( (socket) => {
 
               break;
 
+            case '/css/styles.css':
+             socket.write(insertData('200 OK', 'text/css', styles));
+            socket.end();
+             break;
             default:
               socket.write(insertData('404', 'text/html', error404));
               socket.end();
-
               }
 
           });
